@@ -1,0 +1,22 @@
+org: harrified
+app: poll
+service: poll
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  # profile: poll-user
+  stage: ${opt:stage, self:custom.defaultStage}
+  profile: ${self:custom.myProfile.${self:custom.myStage}}
+
+custom:
+  defaultStage: dev
+  myStage: ${opt:stage, self:provider.stage}
+  myProfile:
+    prod: poll-user-prod
+    dev: poll-user
+
+functions:
+  function1:
+    handler: index.handler
